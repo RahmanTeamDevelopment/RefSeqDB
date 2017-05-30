@@ -1,17 +1,17 @@
 from __future__ import division
 from utils.transcripts import TranscriptDBWriter, Transcript, Exon
 from urllib2 import urlopen
+from ftplib import FTP
 import gzip
 import os
 import sys
-from ftplib import FTP
 
-########################################################################################################################
 
-# Return list of available RefSeq data files
 def access_refseq_files():
+    """Return list of available RefSeq data files"""
+
     ret = []
-    ftp = FTP('ftp.ncbi.nlm.nih.gov', timeout = 3600)
+    ftp = FTP('ftp.ncbi.nlm.nih.gov', timeout=3600)
     ftp.login()
     ftp.cwd('/refseq/H_sapiens/mRNA_Prot/')
     files = []
@@ -21,20 +21,27 @@ def access_refseq_files():
     i = 0
     while True:
         i += 1
-        fn = 'human.'+str(i)+'.rna.gbff.gz'
-        if fn in files: ret.append('ftp://ftp.ncbi.nlm.nih.gov/refseq/H_sapiens/mRNA_Prot/'+fn)
-        else: break
+        fn = 'human.' + str(i) + '.rna.gbff.gz'
+        if fn in files:
+            ret.append('ftp://ftp.ncbi.nlm.nih.gov/refseq/H_sapiens/mRNA_Prot/' + fn)
+        else:
+            break
     return ret
 
-# Download and read UCSC mappings data
+
 def read_ucsc_mapping(build):
+    """Download and read UCSC mappings data"""
+
     ret = dict()
 
     # Download appropriate data file depending on build
-    if build == 'GRCh38': url = 'ftp://hgdownload.cse.ucsc.edu/goldenPath/hg38/database/refGene.txt.gz'
-    else: url = 'ftp://hgdownload.cse.ucsc.edu/goldenPath/hg19/database/refGene.txt.gz'
+    if build == 'GRCh38':
+        url = 'ftp://hgdownload.cse.ucsc.edu/goldenPath/hg38/database/refGene.txt.gz'
+    else:
+        url = 'ftp://hgdownload.cse.ucsc.edu/goldenPath/hg19/database/refGene.txt.gz'
     f = urlopen(url)
-    with open('ucsc.gz', "wb") as datafile: datafile.write(f.read())
+    with open('ucsc.gz', "wb") as datafile:
+        datafile.write(f.read())
 
     # Iterate through the lines of data file
     for line in gzip.open('ucsc.gz'):
@@ -44,7 +51,7 @@ def read_ucsc_mapping(build):
         if not cols[1].startswith('NM_'): continue
 
         chrom = cols[2][3:]
-        allowed = [str(x) for x in range(1,23)]+['X','Y','MT']
+        allowed = [str(x) for x in range(1, 23)] + ['X', 'Y', 'MT']
         if chrom not in allowed: continue
 
         key = cols[1]
@@ -73,8 +80,9 @@ def read_ucsc_mapping(build):
     os.remove('ucsc.gz')
     return ret
 
-# Process a single RefSeq data file
+
 def process_refseq_file(UCSC_mappings, tdb_writer, out_incl, out_excl):
+    """Process RefSeq data file"""
     record = []
     for line in gzip.open('refseqdata.gz', 'r'):
         line = line.strip()
@@ -84,9 +92,12 @@ def process_refseq_file(UCSC_mappings, tdb_writer, out_incl, out_excl):
         record.append(line)
     process_record(UCSC_mappings, tdb_writer, out_incl, out_excl, record)
 
-# Process a single record
+
 def process_record(UCSC_mappings, tdb_writer, out_incl, out_excl, record):
-    if len(record) == 0: return
+    """Process a RefSeq record"""
+
+    if len(record) == 0:
+        return
 
     cdna_exons = []
     dna = ''
@@ -102,7 +113,8 @@ def process_record(UCSC_mappings, tdb_writer, out_incl, out_excl, record):
     locusline = sections['LOCUS'][0]
     ID = locusline.split()[1]
 
-    if not ID.startswith('NM_'): return
+    if not ID.startswith('NM_'):
+        return
 
     # Retrieve version
     versionline = sections['VERSION'][0]
@@ -131,7 +143,8 @@ def process_record(UCSC_mappings, tdb_writer, out_incl, out_excl, record):
 
     # Retrieve transcript sequence
     for line in sections['ORIGIN']:
-        if line.startswith('ORIGIN'): continue
+        if line.startswith('ORIGIN'):
+            continue
         dna += line
     sequence = ''
     for x in dna:
@@ -143,8 +156,25 @@ def process_record(UCSC_mappings, tdb_writer, out_incl, out_excl, record):
         sequence_trimmed += sequence[int(start) - 1:int(end)]
     sequence = sequence_trimmed
 
-    # Output nothing in case of missing data
-    if cdna_coding_start == '' or cdna_coding_end == '' or sequence == '' or version == '' or hgncid == '': return
+    # Missing CDS
+    if cdna_coding_start == '' or cdna_coding_end == '':
+        out_excl.write('\t'.join([ID, 'missing_cds']) + '\n')
+        return
+
+    # Missing sequence
+    if sequence == '':
+        out_excl.write('\t'.join([ID, 'missing_sequence']) + '\n')
+        return
+
+    # Missing version
+    if version == '':
+        out_excl.write('\t'.join([ID, 'missing_version']) + '\n')
+        return
+
+    # Missing HGNC ID
+    if hgncid == '':
+        out_excl.write('\t'.join([ID, 'missing_hgncid']) + '\n')
+        return
 
     # Initialize transcript and set ID, version and hgnc_id
     transcript = Transcript()
@@ -192,11 +222,12 @@ def process_record(UCSC_mappings, tdb_writer, out_incl, out_excl, record):
 
     # Add transcript to database
     tdb_writer.add(transcript)
-    out_incl.write('\t'.join([transcript.id, transcript.hgnc_id])+'\n')
+    out_incl.write('\t'.join([transcript.id, transcript.hgnc_id]) + '\n')
 
 
-# Split record to LOCUS, VERSION, FEATURES and ORIGIN sections
 def split_sections(record):
+    """Split record to LOCUS, VERSION, FEATURES and ORIGIN sections"""
+
     ret = {'LOCUS': [], 'VERSION': [], 'FEATURES': [], 'ORIGIN': []}
     keywords = ['LOCUS', 'DEFINITION', 'ACCESSION', 'VERSION', 'KEYWORDS', 'SOURCE', 'REFERENCE', 'FEATURES', 'ORIGIN']
     key = ''
@@ -208,31 +239,36 @@ def split_sections(record):
         if key in ret.keys(): ret[key].append(line)
     return ret
 
-# Initialize progress information
+
 def init_progress_info():
+    """Initialize progress information"""
+
     sys.stdout.write('\rProcessing transcripts ... 0.0%')
     sys.stdout.flush()
 
-# Print out progress information
+
 def print_progress_info(counter, N):
+    """Print out progress information"""
+
     x = round(100 * counter / N, 1)
     x = min(x, 100.0)
     sys.stdout.write('\rProcessing transcripts ... ' + str(x) + '%')
     sys.stdout.flush()
 
-# Finalize progress information
+
 def finalize_progress_info():
+    """Finalize progress information"""
+
     sys.stdout.write('\rProcessing transcripts ... 100.0%')
     sys.stdout.flush()
     print ' - Done.'
 
 
-def main(options):
+def main(ver, options):
+    """Main function"""
 
-    ver = 'x.x.x'
-
-    columns = ['ID', 'VERSION', 'HGNC_ID', 'INFO', 'STRAND', 'CHROM', 'START', 'END', 'EXONS', 'CODING_START', 'CODING_END',
-               'SEQUENCE', 'CDNA_CODING_START', 'CDNA_CODING_END']
+    columns = ['ID', 'VERSION', 'HGNC_ID', 'INFO', 'STRAND', 'CHROM', 'START', 'END', 'EXONS', 'CODING_START',
+               'CODING_END', 'SEQUENCE', 'CDNA_CODING_START', 'CDNA_CODING_END']
 
     tdb_writer = TranscriptDBWriter(options.output, source='refseq_db ' + ver, build=options.build, columns=columns)
 
@@ -255,7 +291,6 @@ def main(options):
     # Initialize progress info
     init_progress_info()
 
-    unknown_errors = []
     # Iterate through available RefSeq data files
     for i in range(len(urls)):
 
@@ -282,10 +317,7 @@ def main(options):
     # Finalize transcript database
     tdb_writer.finalize()
 
+    # Close output files
     out_incl.close()
-
-    # Goodbye message
-    print ''
-    if len(unknown_errors) > 0: print 'Unknown errors: ' + str(unknown_errors) + '\n'
-
+    out_excl.close()
 
