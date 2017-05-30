@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
     name= 'RefSeqDB',
     version = '0.1.0',
-    description = '...',
+    description = 'Tool for creating RefSeq transcript database',
     url = '...',
     author = 'Marton Munz',
     author_email = 'munzmarci@gmail.com',
