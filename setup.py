@@ -9,6 +9,6 @@ setup(
     author_email = 'munzmarci@gmail.com',
     license = 'MIT',
     packages=['refseqdb'],
-    scripts=['bin/refseqdb.py','bin/refseqdb'],
+    scripts=['bin/RefSeqDB.py','bin/refseqdb'],
     zip_safe=False
 )
