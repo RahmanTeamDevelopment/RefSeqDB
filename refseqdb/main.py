@@ -285,8 +285,11 @@ def main(ver, options):
 
     tdb_writer = TranscriptDBWriter(options.output, source='refseq_db ' + ver, build=options.build, columns=columns)
 
+    # Initialize output files and write headers
     out_incl = open(options.output + '_included.txt', 'w')
+    out_incl.write('\t'.join(['#ID', 'HGNCID']) + '\n')
     out_excl = open(options.output + '_excluded.txt', 'w')
+    out_excl.write('\t'.join(['#ID', 'Reason']) + '\n')
 
     # Retrieve list of available RefSeq data files
     sys.stdout.write('\rAccessing RefSeq data files ... ')
