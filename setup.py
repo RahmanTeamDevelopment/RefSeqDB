@@ -4,7 +4,7 @@ setup(
     name= 'RefSeqDB',
     version = '0.1.0',
     description = 'Tool for creating RefSeq transcript database',
-    url = '...',
+    url = 'https://github.com/RahmanTeamDevelopment/RefSeqDB',
     author = 'Marton Munz',
     author_email = 'munzmarci@gmail.com',
     license = 'MIT',
