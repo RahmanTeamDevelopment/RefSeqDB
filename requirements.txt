@@ -6,4 +6,4 @@ pyparsing==2.2.0
 pysam==0.10.0
 pytest==3.0.7
 six==1.10.0
--e git+https://github.com/RahmanTeamDevelopment/Utils.git
+git+https://github.com/RahmanTeamDevelopment/Utils#egg=Utils
