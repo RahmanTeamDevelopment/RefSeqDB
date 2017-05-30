@@ -46,16 +46,20 @@ def read_ucsc_mapping(build):
     # Iterate through the lines of data file
     for line in gzip.open('ucsc.gz'):
         line = line.strip()
-        if line == '': continue
+        if line == '':
+            continue
         cols = line.split()
-        if not cols[1].startswith('NM_'): continue
+        if not cols[1].startswith('NM_'):
+            continue
 
         chrom = cols[2][3:]
         allowed = [str(x) for x in range(1, 23)] + ['X', 'Y', 'MT']
-        if chrom not in allowed: continue
+        if chrom not in allowed:
+            continue
 
         key = cols[1]
-        if key not in ret.keys(): ret[key] = []
+        if key not in ret.keys():
+            ret[key] = []
 
         mapping = {
             'chrom': chrom,
@@ -81,19 +85,19 @@ def read_ucsc_mapping(build):
     return ret
 
 
-def process_refseq_file(UCSC_mappings, tdb_writer, out_incl, out_excl):
+def process_refseq_file(ucsc_mappings, tdb_writer, out_incl, out_excl):
     """Process RefSeq data file"""
     record = []
     for line in gzip.open('refseqdata.gz', 'r'):
         line = line.strip()
         if line.startswith('LOCUS'):
-            process_record(UCSC_mappings, tdb_writer, out_incl, out_excl, record)
+            process_record(ucsc_mappings, tdb_writer, out_incl, out_excl, record)
             record = []
         record.append(line)
-    process_record(UCSC_mappings, tdb_writer, out_incl, out_excl, record)
+    process_record(ucsc_mappings, tdb_writer, out_incl, out_excl, record)
 
 
-def process_record(UCSC_mappings, tdb_writer, out_incl, out_excl, record):
+def process_record(ucsc_mappings, tdb_writer, out_incl, out_excl, record):
     """Process a RefSeq record"""
 
     if len(record) == 0:
@@ -111,9 +115,9 @@ def process_record(UCSC_mappings, tdb_writer, out_incl, out_excl, record):
 
     # Retrieve transcript ID (NM)
     locusline = sections['LOCUS'][0]
-    ID = locusline.split()[1]
+    id = locusline.split()[1]
 
-    if not ID.startswith('NM_'):
+    if not id.startswith('NM_'):
         return
 
     # Retrieve version
@@ -158,27 +162,27 @@ def process_record(UCSC_mappings, tdb_writer, out_incl, out_excl, record):
 
     # Missing CDS
     if cdna_coding_start == '' or cdna_coding_end == '':
-        out_excl.write('\t'.join([ID, 'missing_cds']) + '\n')
+        out_excl.write('\t'.join([id, 'missing_cds']) + '\n')
         return
 
     # Missing sequence
     if sequence == '':
-        out_excl.write('\t'.join([ID, 'missing_sequence']) + '\n')
+        out_excl.write('\t'.join([id, 'missing_sequence']) + '\n')
         return
 
     # Missing version
     if version == '':
-        out_excl.write('\t'.join([ID, 'missing_version']) + '\n')
+        out_excl.write('\t'.join([id, 'missing_version']) + '\n')
         return
 
     # Missing HGNC ID
     if hgncid == '':
-        out_excl.write('\t'.join([ID, 'missing_hgncid']) + '\n')
+        out_excl.write('\t'.join([id, 'missing_hgncid']) + '\n')
         return
 
     # Initialize transcript and set ID, version and hgnc_id
     transcript = Transcript()
-    transcript.id = ID
+    transcript.id = id
     transcript.version = version
     transcript.hgnc_id = hgncid
 
@@ -187,17 +191,17 @@ def process_record(UCSC_mappings, tdb_writer, out_incl, out_excl, record):
     transcript.cdna_coding_end = cdna_coding_end
 
     # No UCSC mapping
-    if ID not in UCSC_mappings:
+    if id not in ucsc_mappings:
         out_excl.write('\t'.join([transcript.id, 'no_mapping']) + '\n')
         return
 
     # Multiple UCSC mapping
-    if len(UCSC_mappings[ID]) > 1:
+    if len(ucsc_mappings[id]) > 1:
         out_excl.write('\t'.join([transcript.id, 'multiple_mapping']) + '\n')
         return
 
     # Single mapping
-    mapping = UCSC_mappings[ID][0]
+    mapping = ucsc_mappings[id][0]
 
     # Set chrom, strand, exons, start and end of transcript
     transcript.chrom = mapping['chrom']
@@ -220,6 +224,14 @@ def process_record(UCSC_mappings, tdb_writer, out_incl, out_excl, record):
     # Finalize transcript
     transcript.finalize()
 
+    # Incorrect CDS length
+    coding_length = 0
+    for (cds_start, cds_end) in transcript.cds_regions():
+        coding_length += cds_end - cds_start
+    if coding_length % 3 != 0:
+        out_excl.write('\t'.join([id, 'incorrect_cds_length']) + '\n')
+        return
+
     # Add transcript to database
     tdb_writer.add(transcript)
     out_incl.write('\t'.join([transcript.id, transcript.hgnc_id]) + '\n')
@@ -236,7 +248,8 @@ def split_sections(record):
             if line.startswith(k):
                 key = k
                 break
-        if key in ret.keys(): ret[key].append(line)
+        if key in ret.keys():
+            ret[key].append(line)
     return ret
 
 
@@ -284,7 +297,7 @@ def main(ver, options):
     # Download and read UCSC mapping data
     sys.stdout.write('\rDownloading and reading UCSC mapping data ... ')
     sys.stdout.flush()
-    UCSC_mappings = read_ucsc_mapping(options.build)
+    ucsc_mappings = read_ucsc_mapping(options.build)
     print '- Done.'
     print ''
 
@@ -306,7 +319,7 @@ def main(ver, options):
 
         # Process RefSeq data file
         print_progress_info(i + 1, len(urls))
-        process_refseq_file(UCSC_mappings, tdb_writer, out_incl, out_excl)
+        process_refseq_file(ucsc_mappings, tdb_writer, out_incl, out_excl)
 
         # Remove RefSeq data file
         os.remove('refseqdata.gz')
@@ -320,4 +333,3 @@ def main(ver, options):
     # Close output files
     out_incl.close()
     out_excl.close()
-
