@@ -5,7 +5,7 @@ from optparse import OptionParser
 from refseqdb.main import main
 
 # Version
-ver = 'x.x.x'
+ver = '0.1.0'
 
 # Command line argument parsing
 descr = 'RefSeqDB v'+ver
@@ -20,5 +20,5 @@ print 'refseq_db v'+ver+' started: '+str(datetime.datetime.now())+'\n'
 
 main(ver, options)
 
-print 'Finished: '+str(datetime.datetime.now())
+print '\nFinished: '+str(datetime.datetime.now())
 print '='*100+'\n'
