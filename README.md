@@ -1,2 +1,2 @@
-RefSeqDB: tool for creating RefSeq transcript database
-======================================================
+RefSeqDB: a tool for creating RefSeq transcript database
+========================================================
