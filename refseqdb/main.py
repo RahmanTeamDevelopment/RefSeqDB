@@ -49,6 +49,7 @@ def read_ucsc_mapping(build):
         if line == '':
             continue
         cols = line.split()
+        
         if not cols[1].startswith('NM_'):
             continue
 
@@ -61,6 +62,7 @@ def read_ucsc_mapping(build):
         if key not in ret.keys():
             ret[key] = []
 
+        # Save mapping in a dict
         mapping = {
             'chrom': chrom,
             'strand': cols[3],
@@ -79,6 +81,7 @@ def read_ucsc_mapping(build):
             mapping['coding_start'] = int(cols[7]) - 1
             mapping['coding_end'] = int(cols[6])
 
+        # Add possible mapping to list
         ret[key].append(mapping)
 
     os.remove('ucsc.gz')
@@ -181,12 +184,7 @@ def process_record(ucsc_mappings, tdb_writer, out_incl, out_excl, record):
         return
 
     # Initialize transcript and set ID, version and hgnc_id
-    transcript = Transcript()
-    transcript.id = id
-    transcript.version = version
-    transcript.hgnc_id = hgncid
-
-    transcript.sequence = sequence
+    transcript = Transcript(id=id, version=version, hgnc_id=hgncid, sequence=sequence)
     transcript.cdna_coding_start = cdna_coding_start
     transcript.cdna_coding_end = cdna_coding_end
 
@@ -225,10 +223,7 @@ def process_record(ucsc_mappings, tdb_writer, out_incl, out_excl, record):
     transcript.finalize()
 
     # Incorrect CDS length
-    coding_length = 0
-    for (cds_start, cds_end) in transcript.cds_regions():
-        coding_length += cds_end - cds_start
-    if coding_length % 3 != 0:
+    if transcript.get_cds_length() % 3 != 0:
         out_excl.write('\t'.join([id, 'incorrect_cds_length']) + '\n')
         return
 
