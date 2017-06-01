@@ -1,0 +1,263 @@
+LOCUS       NM_152585               1895 bp    mRNA    linear   PRI 24-MAY-2017
+DEFINITION  Homo sapiens RNA binding motif protein, Y-linked, family 1, member
+            F (RBMY1F), transcript variant 1, mRNA.
+ACCESSION   NM_152585
+VERSION     NM_152585.2
+KEYWORDS    RefSeq.
+SOURCE      Homo sapiens (human)
+  ORGANISM  Homo sapiens
+            Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi;
+            Mammalia; Eutheria; Euarchontoglires; Primates; Haplorrhini;
+            Catarrhini; Hominidae; Homo.
+REFERENCE   1  (bases 1 to 1895)
+  AUTHORS   Rolland T, Tasan M, Charloteaux B, Pevzner SJ, Zhong Q, Sahni N, Yi
+            S, Lemmens I, Fontanillo C, Mosca R, Kamburov A, Ghiassian SD, Yang
+            X, Ghamsari L, Balcha D, Begg BE, Braun P, Brehme M, Broly MP,
+            Carvunis AR, Convery-Zupan D, Corominas R, Coulombe-Huntington J,
+            Dann E, Dreze M, Dricot A, Fan C, Franzosa E, Gebreab F, Gutierrez
+            BJ, Hardy MF, Jin M, Kang S, Kiros R, Lin GN, Luck K, MacWilliams
+            A, Menche J, Murray RR, Palagi A, Poulin MM, Rambout X, Rasla J,
+            Reichert P, Romero V, Ruyssinck E, Sahalie JM, Scholz A, Shah AA,
+            Sharma A, Shen Y, Spirohn K, Tam S, Tejeda AO, Trigg SA, Twizere
+            JC, Vega K, Walsh J, Cusick ME, Xia Y, Barabasi AL, Iakoucheva LM,
+            Aloy P, De Las Rivas J, Tavernier J, Calderwood MA, Hill DE, Hao T,
+            Roth FP and Vidal M.
+  TITLE     A proteome-scale map of the human interactome network
+  JOURNAL   Cell 159 (5), 1212-1226 (2014)
+   PUBMED   25416956
+REFERENCE   2  (bases 1 to 1895)
+  AUTHORS   Tsuei DJ, Hsu HC, Lee PH, Jeng YM, Pu YS, Chen CN, Lee YC, Chou WC,
+            Chang CJ, Ni YH and Chang MH.
+  TITLE     RBMY, a male germ cell-specific RNA-binding protein, activated in
+            human liver cancers and transforms rodent fibroblasts
+  JOURNAL   Oncogene 23 (34), 5815-5822 (2004)
+   PUBMED   15184870
+REFERENCE   3  (bases 1 to 1895)
+  AUTHORS   Skaletsky H, Kuroda-Kawaguchi T, Minx PJ, Cordum HS, Hillier L,
+            Brown LG, Repping S, Pyntikova T, Ali J, Bieri T, Chinwalla A,
+            Delehaunty A, Delehaunty K, Du H, Fewell G, Fulton L, Fulton R,
+            Graves T, Hou SF, Latrielle P, Leonard S, Mardis E, Maupin R,
+            McPherson J, Miner T, Nash W, Nguyen C, Ozersky P, Pepin K, Rock S,
+            Rohlfing T, Scott K, Schultz B, Strong C, Tin-Wollam A, Yang SP,
+            Waterston RH, Wilson RK, Rozen S and Page DC.
+  TITLE     The male-specific region of the human Y chromosome is a mosaic of
+            discrete sequence classes
+  JOURNAL   Nature 423 (6942), 825-837 (2003)
+   PUBMED   12815422
+REFERENCE   4  (bases 1 to 1895)
+  AUTHORS   Venables JP, Elliott DJ, Makarova OV, Makarov EM, Cooke HJ and
+            Eperon IC.
+  TITLE     RBMY, a probable human spermatogenesis factor, and other hnRNP G
+            proteins interact with Tra2beta and affect splicing
+  JOURNAL   Hum. Mol. Genet. 9 (5), 685-694 (2000)
+   PUBMED   10749975
+REFERENCE   5  (bases 1 to 1895)
+  AUTHORS   Chai NN, Zhou H, Hernandez J, Najmabadi H, Bhasin S and Yen PH.
+  TITLE     Structure and organization of the RBMY genes on the human Y
+            chromosome: transposition and amplification of an ancestral
+            autosomal hnRNPG gene
+  JOURNAL   Genomics 49 (2), 283-289 (1998)
+   PUBMED   9598316
+REFERENCE   6  (bases 1 to 1895)
+  AUTHORS   Prosser J, Inglis JD, Condie A, Ma K, Kerr S, Thakrar R, Taylor K,
+            Cameron JM and Cooke HJ.
+  TITLE     Degeneracy in human multicopy RBM (YRRM), a candidate
+            spermatogenesis gene
+  JOURNAL   Mamm. Genome 7 (11), 835-842 (1996)
+   PUBMED   8875892
+REFERENCE   7  (bases 1 to 1895)
+  AUTHORS   Ma K, Inglis JD, Sharkey A, Bickmore WA, Hill RE, Prosser EJ, Speed
+            RM, Thomson EJ, Jobling M, Taylor K et al.
+  TITLE     A Y chromosome gene family with RNA-binding protein homology:
+            candidates for the azoospermia factor AZF controlling human
+            spermatogenesis
+  JOURNAL   Cell 75 (7), 1287-1295 (1993)
+   PUBMED   8269511
+COMMENT     REVIEWED REFSEQ: This record has been curated by NCBI staff. The
+            reference sequence was derived from BC030018.2 and AC023342.3.
+            On Dec 30, 2014 this sequence version replaced gi:34303936.
+            
+            Summary: This gene encodes a protein containing an RNA-binding
+            motif in the N-terminus and four SRGY (serine, arginine, glycine,
+            tyrosine) boxes in the C-terminus. Multiple copies of this gene are
+            found in the AZFb azoospermia factor region of chromosome Y and the
+            encoded protein is thought to be involved in spermatogenesis. Most
+            copies of this locus are pseudogenes, although six highly similar
+            copies have full-length ORFs and are considered functional. Four
+            functional copies of this gene are found within inverted repeat
+            IR2; two functional copies of this gene are found in palindrome P3,
+            along with two copies of PTPN13-like, Y-linked. [provided by
+            RefSeq, Jul 2008].
+            
+            Transcript Variant: This variant (1) represents the longer
+            transcript and encodes the longer isoform (1).
+            
+            ##Evidence-Data-START##
+            Transcript exon combination :: BC030018.2 [ECO:0000332]
+            ##Evidence-Data-END##
+            COMPLETENESS: complete on the 3' end.
+PRIMARY     REFSEQ_SPAN         PRIMARY_IDENTIFIER PRIMARY_SPAN        COMP
+            1-1299              BC030018.2         1-1299
+            1300-1300           AC023342.3         37011-37011         c
+            1301-1895           BC030018.2         1301-1895
+FEATURES             Location/Qualifiers
+     source          1..1895
+                     /organism="Homo sapiens"
+                     /mol_type="mRNA"
+                     /db_xref="taxon:9606"
+                     /chromosome="Y"
+                     /map="Yq11.223"
+     gene            1..1895
+                     /gene="RBMY1F"
+                     /gene_synonym="YRRM2"
+                     /note="RNA binding motif protein, Y-linked, family 1,
+                     member F"
+                     /db_xref="GeneID:159163"
+                     /db_xref="HGNC:HGNC:23974"
+                     /db_xref="HPRD:15232"
+     exon            1..108
+                     /gene="RBMY1F"
+                     /gene_synonym="YRRM2"
+                     /inference="alignment:Splign:1.39.8"
+     STS             22..88
+                     /gene="RBMY1F"
+                     /gene_synonym="YRRM2"
+                     /standard_name="G65850"
+                     /db_xref="UniSTS:230516"
+     misc_feature    62..64
+                     /gene="RBMY1F"
+                     /gene_synonym="YRRM2"
+                     /note="upstream in-frame stop codon"
+     exon            109..221
+                     /gene="RBMY1F"
+                     /gene_synonym="YRRM2"
+                     /inference="alignment:Splign:1.39.8"
+     CDS             113..1603
+                     /gene="RBMY1F"
+                     /gene_synonym="YRRM2"
+                     /note="isoform 1 is encoded by transcript variant 1;
+                     RNA-binding motif protein, Y chromosome, family 1 member
+                     F/J; y chromosome RNA recognition motif 2"
+                     /codon_start=1
+                     /product="RNA-binding motif protein, Y chromosome, family
+                     1 member F/J isoform 1"
+                     /protein_id="NP_689798.1"
+                     /db_xref="CCDS:CCDS35483.1"
+                     /db_xref="GeneID:159163"
+                     /db_xref="HGNC:HGNC:23974"
+                     /db_xref="HPRD:15232"
+                     /translation="MVEADHPGKLFIGGLNRETNEKMLKAVFGKHGPISEVLLIKDRT
+                     SKSRGFAFITFENPADAKNAAKDMNGTSLHGKAIKVEQAKKPSFQSGGRRRPPASSRN
+                     RSPSGSLRSARGSSGGTRGWLPSHEGHLDDGGYTPDLKMSYSRGLIPVKRGPSSRSGG
+                     PPPKKSAPSAVARSNSWMGSQGPMSQRRENYGVPPRRATISSWRNDRMSTRHDGYATN
+                     DGNHPSCQETRDYAPPSRGYAYRDNGHSNRDEHSSRGYRNHRSSRETRDYAPPSRGHA
+                     YRDYGHSRRDESYSRGYRNHRSSRETREYAPPSRGHGYRDYGHSRRHESYSRGYRNHP
+                     SSRETRDYAPPHRDYAYRDYGHSSWDEHSSRGYSYHDGYGEALGRDHSEHLSGSSYRD
+                     ALQRYGTSHGAPPARGPRMSYGGSTCHAYSNTRDRYGRSWESYSSCGDFHYCDREHVC
+                     RKDQRNPPSLGRVLPDPREAYGSSSYVASIVDGGESRSEKGDSSRY"
+     exon            222..325
+                     /gene="RBMY1F"
+                     /gene_synonym="YRRM2"
+                     /inference="alignment:Splign:1.39.8"
+     exon            326..503
+                     /gene="RBMY1F"
+                     /gene_synonym="YRRM2"
+                     /inference="alignment:Splign:1.39.8"
+     STS             391..504
+                     /gene="RBMY1F"
+                     /gene_synonym="YRRM2"
+                     /standard_name="G65856"
+                     /db_xref="UniSTS:230522"
+     exon            504..656
+                     /gene="RBMY1F"
+                     /gene_synonym="YRRM2"
+                     /inference="alignment:Splign:1.39.8"
+     exon            657..771
+                     /gene="RBMY1F"
+                     /gene_synonym="YRRM2"
+                     /inference="alignment:Splign:1.39.8"
+     exon            772..882
+                     /gene="RBMY1F"
+                     /gene_synonym="YRRM2"
+                     /inference="alignment:Splign:1.39.8"
+     exon            883..993
+                     /gene="RBMY1F"
+                     /gene_synonym="YRRM2"
+                     /inference="alignment:Splign:1.39.8"
+     exon            994..1104
+                     /gene="RBMY1F"
+                     /gene_synonym="YRRM2"
+                     /inference="alignment:Splign:1.39.8"
+     exon            1105..1215
+                     /gene="RBMY1F"
+                     /gene_synonym="YRRM2"
+                     /inference="alignment:Splign:1.39.8"
+     exon            1216..1304
+                     /gene="RBMY1F"
+                     /gene_synonym="YRRM2"
+                     /inference="alignment:Splign:1.39.8"
+     STS             1218..1693
+                     /gene="RBMY1F"
+                     /gene_synonym="YRRM2"
+                     /standard_name="RBMY"
+                     /db_xref="UniSTS:257055"
+     exon            1305..1881
+                     /gene="RBMY1F"
+                     /gene_synonym="YRRM2"
+                     /inference="alignment:Splign:1.39.8"
+     STS             1359..1462
+                     /gene="RBMY1F"
+                     /gene_synonym="YRRM2"
+                     /standard_name="sY627"
+                     /db_xref="UniSTS:243207"
+     STS             1389..1529
+                     /gene="RBMY1F"
+                     /gene_synonym="YRRM2"
+                     /standard_name="RH38683"
+                     /db_xref="UniSTS:85616"
+     STS             1396..1548
+                     /gene="RBMY1F"
+                     /gene_synonym="YRRM2"
+                     /standard_name="DYS41"
+                     /db_xref="UniSTS:73272"
+     regulatory      1858..1863
+                     /regulatory_class="polyA_signal_sequence"
+                     /gene="RBMY1F"
+                     /gene_synonym="YRRM2"
+     polyA_site      1881
+                     /gene="RBMY1F"
+                     /gene_synonym="YRRM2"
+ORIGIN      
+        1 agctccagct gtccctcccg cagttggccc tgtggtgttc cgaagccggt tacgtacggc
+       61 ctgagggcca ggcgaacctc aggctctttg tcctactaaa aagcgcagca caatggtaga
+      121 agcagatcat cctggcaagc ttttcattgg tggcctcaat agagaaacca atgagaagat
+      181 gcttaaagca gtatttggga aacatggtcc catatcagaa gttcttttga taaaggatcg
+      241 aaccagcaaa tccagaggct ttgcatttat tacttttgag aaccctgcag atgctaagaa
+      301 tgctgcgaaa gatatgaatg gaacgtcttt gcatggaaaa gcaataaaag tagaacaagc
+      361 caagaaacca tcttttcaaa gtggtggtag gcggagacca ccagcttctt cgagaaacag
+      421 aagcccttca ggaagtctga gatctgcaag aggaagcagt ggaggaacaa gagggtggct
+      481 tccctcacat gaagggcacc tggatgatgg tggatacact cctgatctca agatgagtta
+      541 ttctagggga ctcattccag ttaaaagagg tccatcttca agaagtggag gtcctcctcc
+      601 gaaaaaatct gctccttctg ctgtggcaag aagcaatagt tggatgggaa gccaaggtcc
+      661 catgtcacaa agaagagaga attatggagt tcctccacgc agagcgacaa tatcttcctg
+      721 gagaaatgat cgcatgtcaa caagacatga tggttatgca actaacgatg gaaatcatcc
+      781 aagttgccaa gaaacgaggg attatgctcc accatctaga ggctatgcat accgtgataa
+      841 tggtcattct aatcgggatg aacattcctc tagaggatat agaaatcatc gaagttcccg
+      901 agaaactagg gattatgctc caccatctag aggccatgca taccgtgatt atggtcattc
+      961 tcgtcgggat gaaagttatt ctagaggata cagaaatcat cgaagttccc gagaaactag
+     1021 ggagtatgct ccaccatcta gaggccatgg ataccgtgat tatggtcatt ctcgtcgaca
+     1081 tgaaagttat tctagaggat atagaaatca tccaagttcc cgagaaacca gggattatgc
+     1141 tccaccacat agagactatg cataccgtga ttatggtcat tctagttggg atgaacattc
+     1201 ctctagagga tatagttatc atgatggcta cggtgaggcc cttggtagag atcattctga
+     1261 acatctaagt ggaagttctt atagagatgc acttcagagg tacgggacct ctcatggtgc
+     1321 accacctgca agagggcctc ggatgtctta tggtggaagc acctgccacg catatagtaa
+     1381 tacacgagat agatatggca gaagttggga gagttactcg agctgtggtg attttcatta
+     1441 ttgtgatcgt gagcatgttt gcagaaaaga ccaaaggaat ccgccttctc tgggtagggt
+     1501 gctccctgat cctcgtgaag catatggtag ctcaagttat gtggcatcta tagtagatgg
+     1561 tggggagagt cgatctgaaa aaggagactc gagcagatat taaagcaagc attgaaaata
+     1621 atagttattg cataccaatc cttgtttgca aatcaaaaat tgaaatgtta tttctgcatt
+     1681 gttacctgca tattactgaa agaaacatgt tggttttgtg gagagaggta gatactaact
+     1741 tcctccatga attttttgag gtattcaaag gaaaaggaat tgttttcaaa gtaatttcat
+     1801 acttgttgat gctatttgaa aagtgtttag atgtaatatc taccttaaaa ttttcacaat
+     1861 aaaattttac atgtactgca aaaaaaaaaa aaaaa
+//

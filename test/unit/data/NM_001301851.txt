@@ -1,0 +1,177 @@
+LOCUS       NM_001301851            3421 bp    mRNA    linear   PRI 23-MAY-2017
+DEFINITION  Homo sapiens putative uncharacterized protein MGC39545 (LOC403312),
+            mRNA.
+ACCESSION   NM_001301851
+VERSION     NM_001301851.1
+KEYWORDS    RefSeq.
+SOURCE      Homo sapiens (human)
+  ORGANISM  Homo sapiens
+            Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi;
+            Mammalia; Eutheria; Euarchontoglires; Primates; Haplorrhini;
+            Catarrhini; Hominidae; Homo.
+REFERENCE   1  (bases 1 to 3421)
+  AUTHORS   Derrien T, Johnson R, Bussotti G, Tanzer A, Djebali S, Tilgner H,
+            Guernec G, Martin D, Merkel A, Knowles DG, Lagarde J, Veeravalli L,
+            Ruan X, Ruan Y, Lassmann T, Carninci P, Brown JB, Lipovich L,
+            Gonzalez JM, Thomas M, Davis CA, Shiekhattar R, Gingeras TR,
+            Hubbard TJ, Notredame C, Harrow J and Guigo R.
+  TITLE     The GENCODE v7 catalog of human long noncoding RNAs: analysis of
+            their gene structure, evolution, and expression
+  JOURNAL   Genome Res. 22 (9), 1775-1789 (2012)
+   PUBMED   22955988
+REFERENCE   2  (bases 1 to 3421)
+  AUTHORS   Harrow J, Frankish A, Gonzalez JM, Tapanari E, Diekhans M,
+            Kokocinski F, Aken BL, Barrell D, Zadissa A, Searle S, Barnes I,
+            Bignell A, Boychenko V, Hunt T, Kay M, Mukherjee G, Rajan J,
+            Despacio-Reyes G, Saunders G, Steward C, Harte R, Lin M, Howald C,
+            Tanzer A, Derrien T, Chrast J, Walters N, Balasubramanian S, Pei B,
+            Tress M, Rodriguez JM, Ezkurdia I, van Baren J, Brent M, Haussler
+            D, Kellis M, Valencia A, Reymond A, Gerstein M, Guigo R and Hubbard
+            TJ.
+  TITLE     GENCODE: the reference human genome annotation for The ENCODE
+            Project
+  JOURNAL   Genome Res. 22 (9), 1760-1774 (2012)
+   PUBMED   22955987
+REFERENCE   3  (bases 1 to 3421)
+  AUTHORS   Strausberg RL, Feingold EA, Grouse LH, Derge JG, Klausner RD,
+            Collins FS, Wagner L, Shenmen CM, Schuler GD, Altschul SF, Zeeberg
+            B, Buetow KH, Schaefer CF, Bhat NK, Hopkins RF, Jordan H, Moore T,
+            Max SI, Wang J, Hsieh F, Diatchenko L, Marusina K, Farmer AA, Rubin
+            GM, Hong L, Stapleton M, Soares MB, Bonaldo MF, Casavant TL,
+            Scheetz TE, Brownstein MJ, Usdin TB, Toshiyuki S, Carninci P,
+            Prange C, Raha SS, Loquellano NA, Peters GJ, Abramson RD, Mullahy
+            SJ, Bosak SA, McEwan PJ, McKernan KJ, Malek JA, Gunaratne PH,
+            Richards S, Worley KC, Hale S, Garcia AM, Gay LJ, Hulyk SW,
+            Villalon DK, Muzny DM, Sodergren EJ, Lu X, Gibbs RA, Fahey J,
+            Helton E, Ketteman M, Madan A, Rodrigues S, Sanchez A, Whiting M,
+            Madan A, Young AC, Shevchenko Y, Bouffard GG, Blakesley RW,
+            Touchman JW, Green ED, Dickson MC, Rodriguez AC, Grimwood J,
+            Schmutz J, Myers RM, Butterfield YS, Krzywinski MI, Skalska U,
+            Smailus DE, Schnerch A, Schein JE, Jones SJ and Marra MA.
+  CONSRTM   Mammalian Gene Collection Program Team
+  TITLE     Generation and initial analysis of more than 15,000 full-length
+            human and mouse cDNA sequences
+  JOURNAL   Proc. Natl. Acad. Sci. U.S.A. 99 (26), 16899-16903 (2002)
+   PUBMED   12477932
+COMMENT     VALIDATED REFSEQ: This record has undergone validation or
+            preliminary review. The reference sequence was derived from
+            AP000708.5.
+            
+            Sequence Note: The RefSeq transcript and protein were derived from
+            genomic sequence to make the sequence consistent with the reference
+            genome assembly. The genomic coordinates used for the transcript
+            record were based on alignments.
+            
+            ##Evidence-Data-START##
+            Transcript exon combination :: SRR1660807.389872.1, BI551526.1
+                                           [ECO:0000332]
+            RNAseq introns              :: single sample supports all introns
+                                           SAMEA2148874, SAMEA2151119
+                                           [ECO:0000348]
+            ##Evidence-Data-END##
+            COMPLETENESS: complete on the 3' end.
+PRIMARY     REFSEQ_SPAN         PRIMARY_IDENTIFIER PRIMARY_SPAN        COMP
+            1-402               AP000708.5         76653-77054
+            403-3421            AP000708.5         77947-80965
+FEATURES             Location/Qualifiers
+     source          1..3421
+                     /organism="Homo sapiens"
+                     /mol_type="mRNA"
+                     /db_xref="taxon:9606"
+                     /chromosome="11"
+                     /map="11q24.2"
+     gene            1..3421
+                     /gene="LOC403312"
+                     /note="putative uncharacterized protein MGC39545"
+                     /db_xref="GeneID:403312"
+     exon            1..402
+                     /gene="LOC403312"
+                     /inference="alignment:Splign:1.39.8"
+     misc_feature    104..106
+                     /gene="LOC403312"
+                     /note="upstream in-frame stop codon"
+     CDS             116..706
+                     /gene="LOC403312"
+                     /codon_start=1
+                     /product="putative uncharacterized protein MGC39545"
+                     /protein_id="NP_001288780.1"
+                     /db_xref="GeneID:403312"
+                     /translation="MPSGEERRDRQKGRRAGCDTSSTPSNTAPRIPEPGAHPTAARPA
+                     TAQPPRSLLPPVCSKTIALPASAAAASGSDTAGMRGLGKAPHSGEGHERGRGNSKMKA
+                     CNNYQYGYLAKPDTSFWIKCRRWLLADAGRHTQRPFWTFRVSHSPLLEAEAGRPSDVS
+                     QLQLGSDLKPKMRRPAGELFSPKDAGWELDPAEKSE"
+     exon            403..3421
+                     /gene="LOC403312"
+                     /inference="alignment:Splign:1.39.8"
+     STS             1236..1864
+                     /gene="LOC403312"
+                     /standard_name="RH80031"
+                     /db_xref="UniSTS:91103"
+     STS             1658..1851
+                     /gene="LOC403312"
+                     /standard_name="sY3084"
+                     /db_xref="UniSTS:515126"
+     STS             1741..1864
+                     /gene="LOC403312"
+                     /standard_name="PMC156606P2"
+                     /db_xref="UniSTS:271409"
+ORIGIN      
+        1 agcacaatgg ctggcactct gaggaagccg gactcatccc gtgcaggccg catacacact
+       61 ccactgccct tccggccaaa caagcccgga cacgggagag ggatgagagt cggggatgcc
+      121 tagcggcgag gagagaaggg ataggcaaaa gggaagaaga gcgggctgtg atacctcctc
+      181 gacgccgtca aacactgctc cccgcattcc agagcccggg gcccacccga cggcagcgcg
+      241 ccccgccacc gcgcagccgc cccggtccct tctcccgccc gtctgtagta aaacaatcgc
+      301 tctcccggcg tctgcggccg ctgccagcgg ttctgacact gcaggaatgc gcggtctggg
+      361 gaaggctccg cactctgggg aggggcacga gcggggtcgg ggaaactcca agatgaaagc
+      421 gtgcaataac taccaatatg gatacctcgc aaagcctgac actagtttct ggataaaatg
+      481 caggcgatgg ctgctggcgg atgccggcag acacactcaa agaccctttt ggactttccg
+      541 agtttcccat tctcctctac tggaggctga ggcgggcagg cccagcgacg tctcccagct
+      601 ccaactgggt tcggacctca agccaaaaat gaggaggccg gcaggagagc ttttctcgcc
+      661 caaagatgct gggtgggagc tggatccagc tgaaaaatct gagtgagaag gtttcaggcc
+      721 caggaggact tgagataata caggaaaatt caagaggctg aaatgagaag ggtccctgga
+      781 gtcttgtgaa aaattattaa tttatcttgt ctactgtgca taggcctgtg cttatagaag
+      841 ttgtcaataa aaaatctaat aattcacgaa tacacacaac taagagcaca agaactgtaa
+      901 ttatcgaagg aaggcactgg aaaaagcatg tcggcttgga gaaccccaag tacttttgtc
+      961 tgatggcaaa gtacctctgg gctgaactga ggacttcaac tggaaggggc agggagcgtc
+     1021 tcttttgctc gtttatgcat tcattccaca gacatttcaa ccatgagaag gatggaaaca
+     1081 ggaataatgt cccaatgaga tgagaagaag cgttggccta tttgcctttg tgggagcaat
+     1141 agacagagga tgtcttcctg taagaaatca taaggccagg cacggtggct cacacctata
+     1201 atcccaacat gttggaaagc tgaggcagga ggatcacttg aggccaggag ttcaagacca
+     1261 gcctaggcaa catagtgaga ccccatctct ataaaaaaaa aaaaattagc caggcatggt
+     1321 gggcccatcc tggtagccca tcctggtagc cccagctaca ctggaggatg aggtgggagg
+     1381 atcgcttgag cccaagaggt tgaagctgca ctccagcctg ggcgacagca agaccttgtc
+     1441 tcaaaagtaa ataaataaat aaataaatca caaagagtag ctggttaaaa gatccctaga
+     1501 tctcctttct tgggatcatg cccagttttg tgaccttggg ttagttaact tccctgtggc
+     1561 tcatttcctc atctgtaaaa tgaagaaaat aatagtgccc gccgggcgcg gtggctcacg
+     1621 cctgtaatcc cagcactttg ggaggccgag gcgggcggat cacgaggtca ggagatcgag
+     1681 accatcctgg ctaacacggt gaaaccccat ctccaccaaa aatacaaaaa atcagctgtg
+     1741 cgtggtggcg ggcgcctgta gtcccaatta ctcgggaggc tgagaatggc gtgcacccag
+     1801 gaggcggagc ttggagtgag ccgagattgc gccactgcac tccagcctgg gtgacagagc
+     1861 gagactccga ctcaaaaaaa aaaaaaagaa agaaaataat agtgccccac tctattgtgg
+     1921 cctgttgtgg gattaaagga gtgaatatga gtaaagtact tccaggttta ttagaaggca
+     1981 ctatatgtat gtatgtgtgt atatatatac acacacacat atatatgtca tatatatgtc
+     2041 tcatatagat gtcccatata tacgtctcat atagatgtcc catatatatg tctcatatag
+     2101 atgtcccata tatgtctcat atagatgtcc cacatatatg tctcatatag atgtcccaca
+     2161 tatatgtctc atatagatgt cccacatgta tgtctcatat agatgtccca catgtatgtc
+     2221 tcatatagat gtcccacatg tatgtctcat atagatgtcc cacatgtatg tctcatatag
+     2281 atgtcccaca tgtatgtctc atatagatgt cccacatgta tgtctcatat agatgtccca
+     2341 catgtatgtc tcatatagat gtcccatata tatgtctcat atagatgtcc tatatatgtg
+     2401 tgtgtgtata tatatatgtg tgtgtgtata tatatgtgtg tgtgtgtata tatatatgtg
+     2461 tatatatatg tatatatata tatgtcttgg ctaatttgag gccatctttt gtctagatct
+     2521 tcagagcatg ggacaaacag atttgagaga agcttgtgaa gtactgaaag tgataaagaa
+     2581 cttggtcttc agctggtgac cttgttagtt atcctctctg tacctcagtt ttctcatctg
+     2641 taaaatggag atgccaatat ctgctgttgg atgccaatat ctactacaag gttgttgtta
+     2701 tgcatattaa gtaatataat gcatgcaaaa tgcttagcac agtgcctggc atataataag
+     2761 aaaccaatta gtggattctg tggttatttt tgtgaggcta tgaagaaact gaaagctgag
+     2821 gacaagtagc ctaggctagg tacctaggat gagaaatccc tgaacatgag cccagttatt
+     2881 cttccagcaa acacttattt tattgtagta agatatatat aacataaaaa ttactatttt
+     2941 aaccattttt aagtgtacaa ttcactggta ttaaacacat tcacattgct gtgtaaccac
+     3001 caccactatt catctacaga aattttgtta tccaaacaga aactctgtat ccattaaaca
+     3061 ctaactcccc agtactccct tccccagccc ctggtaacca ctattctaat tttgtctcta
+     3121 agaatttgac tattctaagt acctcatgta agtgtaatta tacaatattt gttttttgta
+     3181 tctgacttat ttcacttagc acaatgtttt caaggttaat ctatgttgca acaatgtcag
+     3241 aatttctttt ctttttaagg taaataatat tccatggtat gtatatacta cattttgttt
+     3301 atctattcat ctgcccatgg acatttggat tgtttccacc ttttggctat tgtgaataat
+     3361 gctactaatc tgtcatggga ttagagtgag aaagaaagaa taaaaaaata atgctgctgt
+     3421 c
+//
