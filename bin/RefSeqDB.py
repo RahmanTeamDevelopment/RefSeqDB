@@ -5,7 +5,7 @@ from optparse import OptionParser
 from refseqdb.main import main
 
 # Version
-ver = '0.1.0'
+ver = '0.1.1'
 
 # Command line argument parsing
 descr = 'RefSeqDB v'+ver

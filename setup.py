@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name= 'RefSeqDB',
-    version = '0.1.0',
+    version = '0.1.1',
     description = 'A tool for creating RefSeq transcript database',
     url = 'https://github.com/RahmanTeamDevelopment/RefSeqDB',
     author = 'Marton Munz',
