@@ -1,5 +1,5 @@
 from __future__ import division
-from utils.transcripts import Transcript, Exon
+from tgmi.transcripts import Transcript, Exon
 from urllib2 import urlopen
 from ftplib import FTP
 import gzip

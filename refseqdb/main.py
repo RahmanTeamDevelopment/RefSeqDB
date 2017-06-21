@@ -1,5 +1,5 @@
 from __future__ import division
-from utils.transcripts import TranscriptDBWriter
+from tgmi.transcripts import TranscriptDBWriter
 from urllib2 import urlopen
 import os
 import sys
