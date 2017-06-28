@@ -1,6 +1,5 @@
 from __future__ import division
 from tgmi.transcripts import Transcript, Exon
-from urllib2 import urlopen
 from ftplib import FTP
 import gzip
 
@@ -27,84 +26,19 @@ def access_refseq_files():
     return ret
 
 
-def download_ucsc_mapping(build, fn):
-    """Download UCSC mappings data"""
-
-    # Download appropriate data file depending on build
-    if build == 'GRCh38':
-        url = 'ftp://hgdownload.cse.ucsc.edu/goldenPath/hg38/database/refGene.txt.gz'
-    else:
-        url = 'ftp://hgdownload.cse.ucsc.edu/goldenPath/hg19/database/refGene.txt.gz'
-    f = urlopen(url)
-    with open(fn, "wb") as datafile:
-        datafile.write(f.read())
-
-
-def read_ucsc_mapping(fn):
-    """Read UCSC mappings data"""
-
-    ret = dict()
-
-    allowed_chroms = [str(x) for x in range(1, 23)] + ['X', 'Y', 'MT']
-
-    # Iterate through the lines of data file
-    for line in gzip.open(fn):
-        line = line.strip()
-        if line == '':
-            continue
-        cols = line.split()
-
-        if not cols[1].startswith('NM_'):
-            continue
-
-        chrom = cols[2][3:]
-
-        if chrom not in allowed_chroms:
-            continue
-
-        key = cols[1]
-
-        # Save mapping in a dict
-        mapping = {
-            'chrom': chrom,
-            'strand': cols[3],
-            'coding_start': cols[6],
-            'coding_end': cols[7],
-            'exonStarts': [x for x in cols[9].split(',') if x != ''],
-            'exonEnds': [x for x in cols[10].split(',') if x != '']
-        }
-        if mapping['strand'] == '-':
-            mapping['exonStarts'] = mapping['exonStarts'][::-1]
-            mapping['exonEnds'] = mapping['exonEnds'][::-1]
-        if mapping['strand'] == '+':
-            mapping['coding_start'] = int(cols[6])
-            mapping['coding_end'] = int(cols[7]) - 1
-        else:
-            mapping['coding_start'] = int(cols[7]) - 1
-            mapping['coding_end'] = int(cols[6])
-
-        # Add possible mapping to list
-        try:
-            ret[key].append(mapping)
-        except:
-            ret[key] = [mapping]
-
-    return ret
-
-
-def process_refseq_file(ucsc_mappings, tdb_writer, out_incl, out_excl):
+def process_refseq_file(fn, mappings, tdb_writer, out_incl, out_excl):
     """Process RefSeq data file"""
     record = []
-    for line in gzip.open('refseqdata.gz', 'r'):
+    for line in gzip.open(fn, 'r'):
         line = line.strip()
         if line.startswith('LOCUS'):
-            process_record(ucsc_mappings, tdb_writer, out_incl, out_excl, record)
+            process_record(mappings, tdb_writer, out_incl, out_excl, record)
             record = []
         record.append(line)
-    process_record(ucsc_mappings, tdb_writer, out_incl, out_excl, record)
+    process_record(mappings, tdb_writer, out_incl, out_excl, record)
 
 
-def process_record(ucsc_mappings, tdb_writer, out_incl, out_excl, record):
+def process_record(mappings, tdb_writer, out_incl, out_excl, record):
     """Process a RefSeq record"""
 
     if len(record) == 0:
@@ -161,11 +95,15 @@ def process_record(ucsc_mappings, tdb_writer, out_incl, out_excl, record):
     for x in dna:
         if x in ['a', 'c', 'g', 't']:
             sequence += x.upper()
+
+    '''
     sequence_trimmed = ''
     for cdna_exon in cdna_exons:
         [start, end] = cdna_exon.split('-')
+        print str(start), str(end)
         sequence_trimmed += sequence[int(start) - 1:int(end)]
     sequence = sequence_trimmed
+    '''
 
     # Missing CDS
     if cdna_coding_start == '' or cdna_coding_end == '':
@@ -194,17 +132,17 @@ def process_record(ucsc_mappings, tdb_writer, out_incl, out_excl, record):
     transcript.cdna_coding_end = cdna_coding_end
 
     # No UCSC mapping
-    if id not in ucsc_mappings:
+    if id not in mappings:
         out_excl.write('\t'.join([transcript.id, 'no_mapping']) + '\n')
         return
 
     # Multiple UCSC mapping
-    if len(ucsc_mappings[id]) > 1:
+    if len(mappings[id]) > 1:
         out_excl.write('\t'.join([transcript.id, 'multiple_mapping']) + '\n')
         return
 
     # Single mapping
-    mapping = ucsc_mappings[id][0]
+    mapping = mappings[id][0]
 
     # Set chrom, strand, exons, start and end of transcript
     transcript.chrom = mapping['chrom']
@@ -212,7 +150,7 @@ def process_record(ucsc_mappings, tdb_writer, out_incl, out_excl, record):
 
     transcript.exons = []
     for i in range(len(mapping['exonStarts'])):
-        transcript.exons.append(Exon(mapping['exonStarts'][i] + '-' + mapping['exonEnds'][i]))
+        transcript.exons.append(Exon(str(mapping['exonStarts'][i]) + '-' + str(mapping['exonEnds'][i])))
 
     if transcript.strand == '+':
         transcript.start = transcript.exons[0].start
@@ -251,4 +189,3 @@ def split_sections(record):
         if key in ret.keys():
             ret[key].append(line)
     return ret
-

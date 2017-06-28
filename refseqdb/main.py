@@ -3,7 +3,8 @@ from tgmi.transcripts import TranscriptDBWriter
 from urllib2 import urlopen
 import os
 import sys
-import helper
+import refseq
+import mapping
 
 
 def init_progress_info():
@@ -36,7 +37,7 @@ def main(ver, options):
     columns = ['ID', 'VERSION', 'HGNC_ID', 'INFO', 'STRAND', 'CHROM', 'START', 'END', 'EXONS', 'CODING_START',
                'CODING_END', 'SEQUENCE', 'CDNA_CODING_START', 'CDNA_CODING_END']
 
-    tdb_writer = TranscriptDBWriter(options.output, source='refseq_db ' + ver, build=options.build, columns=columns)
+    tdb_writer = TranscriptDBWriter(options.output, source='refseq_db ' + ver, build='GRCh37', columns=columns)
 
     # Initialize output files and write headers
     out_incl = open(options.output + '_included.txt', 'w')
@@ -47,15 +48,24 @@ def main(ver, options):
     # Retrieve list of available RefSeq data files
     sys.stdout.write('\rAccessing RefSeq data files ... ')
     sys.stdout.flush()
-    urls = helper.access_refseq_files()
+
+    if options.mapping == 'ucsc':
+        urls = refseq.access_refseq_files()
+    else:
+        urls = ['ftp://ftp.ncbi.nlm.nih.gov/genomes/Homo_sapiens/GRCh37.p13_interim_annotation/interim_GRCh37.p13_rna.gbk.gz']
     print '- Done.'
 
     # Download and read UCSC mapping data
-    sys.stdout.write('\rDownloading and reading UCSC mapping data ... ')
+    sys.stdout.write('\rDownloading and reading mapping data ... ')
     sys.stdout.flush()
-    helper.download_ucsc_mapping(options.build, 'ucsc.gz')
-    ucsc_mappings = helper.read_ucsc_mapping('ucsc.gz')
-    os.remove('ucsc.gz')
+    if options.mapping == 'ucsc':
+        mapping.download_ucsc_mapping('GRCh37', 'ucsc_mapping.gz')
+        mappings = mapping.read_ucsc_mapping('ucsc_mapping.gz')
+        os.remove('ucsc_mapping.gz')
+    else:
+        mapping.download_ncbi_mapping('ncbi_mapping.gz')
+        mappings = mapping.read_ncbi_mapping('ncbi_mapping.gz')
+        os.remove('ncbi_mapping.gz')
     print '- Done.'
     print ''
 
@@ -77,7 +87,7 @@ def main(ver, options):
 
         # Process RefSeq data file
         print_progress_info(i + 1, len(urls))
-        helper.process_refseq_file(ucsc_mappings, tdb_writer, out_incl, out_excl)
+        refseq.process_refseq_file('refseqdata.gz', mappings, tdb_writer, out_incl, out_excl)
 
         # Remove RefSeq data file
         os.remove('refseqdata.gz')
