@@ -1,5 +1,6 @@
 from urllib2 import urlopen
 import gzip
+import pysam
 
 
 def download_ucsc_mapping(build, fn):
@@ -11,14 +12,6 @@ def download_ucsc_mapping(build, fn):
     else:
         url = 'ftp://hgdownload.cse.ucsc.edu/goldenPath/hg19/database/refGene.txt.gz'
     f = urlopen(url)
-    with open(fn, "wb") as datafile:
-        datafile.write(f.read())
-
-
-def download_ncbi_mapping(fn):
-    """Download NCBI mappings data"""
-
-    f = urlopen('ftp://ftp.ncbi.nlm.nih.gov/genomes/Homo_sapiens/GRCh37.p13_interim_annotation/interim_GRCh37.p13_top_level_2017-01-13.gff3.gz')
     with open(fn, "wb") as datafile:
         datafile.write(f.read())
 
@@ -54,7 +47,8 @@ def read_ucsc_mapping(fn):
             'coding_start': cols[6],
             'coding_end': cols[7],
             'exonStarts': [x for x in cols[9].split(',') if x != ''],
-            'exonEnds': [x for x in cols[10].split(',') if x != '']
+            'exonEnds': [x for x in cols[10].split(',') if x != ''],
+            'exon_cigars': None
         }
         if mapping['strand'] == '-':
             mapping['exonStarts'] = mapping['exonStarts'][::-1]
@@ -75,16 +69,96 @@ def read_ucsc_mapping(fn):
     return ret
 
 
-def read_ncbi_mapping(fn):
+def download_ncbi_mapping():
+    """Download NCBI mappings data"""
+
+    ftpsite = 'ftp://ftp.ncbi.nlm.nih.gov/genomes/Homo_sapiens/GRCh37.p13_interim_annotation/'
+    files = [
+        'interim_GRCh37.p13_knownrefseq_alignments_2017-01-13.bam',
+        'interim_GRCh37.p13_top_level_2017-01-13.gff3.gz'
+    ]
+
+    for fn in files:
+        f = urlopen(ftpsite + fn)
+        with open(fn, "wb") as datafile:
+            datafile.write(f.read())
+
+
+def read_ncbi_mapping():
     """Read NCBI mappings data"""
 
     ret = {}
-    exon_starts = []
-    exon_ends = []
+
+    # Read strand, coding_start and coding_end from GFF3 file
+    gff3_data = process_gff3_file()
+
+    for line in pysam.view('interim_GRCh37.p13_knownrefseq_alignments_2017-01-13.bam'):
+        line = line.strip()
+        cols = line.split()
+
+        id = cols[0]
+        if '.' in id:
+            id = id[:id.find('.')]
+
+        if not id.startswith('NM_'):
+            continue
+
+        # Extract chromosome name
+        chrom_nc = cols[2]
+        if not chrom_nc.startswith('NC_'):
+            continue
+        if '.' in chrom_nc:
+            chrom_nc = chrom_nc[:chrom_nc.find('.')]
+        chrom = translate_chromosome_name_from_nc_id(chrom_nc)
+
+        start_pos = int(cols[3]) - 1
+
+        # Process cigar string and calculate exon coordinates
+        cigar = cols[5]
+        cigar_list = split_cigar(cigar)
+        exon_lengths, intron_lengths, exon_cigars = break_to_exons(cigar_list)
+        exon_starts, exon_ends = calculate_exon_coordinates(exon_lengths, intron_lengths, start_pos)
+
+        # Extract strand, coding_start, coding_end from the GFF3 data
+        # Note: the followings are not correct in case of multiple mappings, however transcripts with multiple mappings
+        # are excluded anyway. If transcripts with multiple mappings are included in the future, the code should match the
+        # corresponding mappings read from the two different sources and not always add data from the 0th mapping.
+        strand = gff3_data[id][0][0]
+        coding_start = gff3_data[id][0][1]
+        coding_end = gff3_data[id][0][2]
+
+        # Reverse order of exon coordinates for reverse-stranded transcripts
+        if strand == '-':
+            exon_starts = exon_starts[::-1]
+            exon_ends = exon_ends[::-1]
+            exon_cigars = exon_cigars[::-1]
+
+        mapping = {
+            'chrom': chrom,
+            'strand': strand,
+            'exonStarts': exon_starts,
+            'exonEnds': exon_ends,
+            'coding_start': coding_start,
+            'coding_end': coding_end,
+            'exon_cigars': exon_cigars
+        }
+
+        if id not in ret:
+            ret[id] = []
+        ret[id].append(mapping)
+
+    return ret
+
+
+def process_gff3_file():
+    """Read strand, coding_start and coding_end from GFF3 file"""
+
+    ret = {}
+
     reading_id = ''
 
     reading = False
-    for line in gzip.open(fn):
+    for line in gzip.open('interim_GRCh37.p13_top_level_2017-01-13.gff3.gz'):
         line = line.strip()
         if line == '' or line.startswith('#'):
             continue
@@ -99,7 +173,7 @@ def read_ncbi_mapping(fn):
             continue
         '''
 
-        if cols[2] not in ['mRNA', 'exon', 'CDS']:
+        if cols[2] not in ['mRNA', 'CDS']:
             continue
 
         if cols[2] == 'mRNA':
@@ -107,32 +181,24 @@ def read_ncbi_mapping(fn):
             if reading:
                 if id not in ret:
                     ret[id] = []
-                ret[id].append(finalize_mapping(strand, min_cds, max_cds, chrom, exon_starts, exon_ends))
+                coding_start, coding_end = coding_endpoints(strand, min_cds, max_cds)
+                ret[id].append((strand, coding_start, coding_end))
                 reading = False
 
-            id = extract_id(cols[8])
+            id = extract_id_from_info_field(cols[8])
 
             if id.startswith('NM_'):
-                exon_starts = []
-                exon_ends = []
                 min_cds = None
                 max_cds = None
                 strand = cols[6]
-                chrom_nc = cols[0]
-                chrom_nc = chrom_nc[:chrom_nc.find('.')]
-                chrom = translate_chromosome_name_from_nc_id(chrom_nc)
                 reading = True
-                reading_id = extract_gff3_record_id(cols[8])
+                reading_id = extract_gff3_record_id_from_info_field(cols[8])
 
             continue
 
-        parent = extract_parent(cols[8])
+        parent = extract_parent_from_info_field(cols[8])
         if parent != reading_id:
             continue
-
-        if reading and cols[2] == 'exon':
-            exon_starts.append(int(cols[3])-1)
-            exon_ends.append(int(cols[4]))
 
         if reading and cols[2] == 'CDS':
             if min_cds is None:
@@ -147,12 +213,22 @@ def read_ncbi_mapping(fn):
     if reading:
         if id not in ret:
             ret[id] = []
-        ret[id].append(finalize_mapping(strand, min_cds, max_cds, chrom, exon_starts, exon_ends))
+        coding_start, coding_end = coding_endpoints(strand, min_cds, max_cds)
+        ret[id].append((strand, coding_start, coding_end))
 
     return ret
 
 
-def extract_id(info):
+def coding_endpoints(strand, min_cds, max_cds):
+    """Determine coding_start and coding_end coordinates"""
+
+    if strand == '+':
+        return min_cds - 1, max_cds - 1
+    else:
+        return max_cds - 1, min_cds - 1
+
+
+def extract_id_from_info_field(info):
     """Helper function to extract transcript ID from info string"""
 
     for tag in info.split(';'):
@@ -165,7 +241,7 @@ def extract_id(info):
                     return id
 
 
-def extract_parent(info):
+def extract_parent_from_info_field(info):
     """Helper function to extract parent ID from info string"""
 
     for tag in info.split(';'):
@@ -173,12 +249,76 @@ def extract_parent(info):
             return tag[7:]
 
 
-def extract_gff3_record_id(info):
+def extract_gff3_record_id_from_info_field(info):
     """Helper function to extract GFF3 record ID from info string"""
 
     for tag in info.split(';'):
         if tag.startswith('ID='):
             return tag[3:]
+
+
+def split_cigar(cig):
+    """Split cigar string to list"""
+
+    ret = []
+    s = ''
+    for c in cig:
+        s += c
+        if c in ['N', '=', 'X', 'I', 'D']:
+            ret.append(s)
+            s = ''
+        cig = cig[1:]
+    return ret
+
+
+def break_to_exons(cigar_list):
+    """Break cigar list to exons"""
+
+    exons = []
+    intron_lengths = []
+    e = []
+    for x in cigar_list:
+        if x[-1] == 'N':
+            exons.append(e)
+            intron_lengths.append(int(x[:-1]))
+            e = []
+        else:
+            e.append(x)
+    exons.append(e)
+
+    exon_lengths = []
+    for e in exons:
+        total = 0
+        for x in e:
+            if x[-1] in ['=', 'X', 'D']:
+                total += int(x[:-1])
+        exon_lengths.append(total)
+
+    exon_cigars = []
+    for e in exons:
+        exon_cigar = ''
+        for x in e:
+            exon_cigar += x
+        exon_cigars.append(exon_cigar)
+
+    return exon_lengths, intron_lengths, exon_cigars
+
+
+def calculate_exon_coordinates(exon_lengths, intron_lengths, start_pos):
+    """Calculate exon coordinates"""
+
+    exon_starts = []
+    exon_ends = []
+
+    p = start_pos
+    for i in range(len(exon_lengths)):
+        exon_starts.append(p)
+        exon_ends.append(p + exon_lengths[i])
+        if i == len(exon_lengths) - 1:
+            break
+        p += exon_lengths[i] + intron_lengths[i]
+
+    return exon_starts, exon_ends
 
 
 def translate_chromosome_name_from_nc_id(nc):
@@ -193,21 +333,3 @@ def translate_chromosome_name_from_nc_id(nc):
     return str(int(nc[3:]))
 
 
-def finalize_mapping(strand, min_cds, max_cds, chrom, exon_starts, exon_ends):
-    """Helper function to finalize mapping data"""
-
-    if strand == '+':
-        coding_start = min_cds - 1
-        coding_end = max_cds - 1
-    else:
-        coding_start = max_cds - 1
-        coding_end = min_cds - 1
-
-    return {
-            'chrom': chrom,
-            'strand': strand,
-            'exonStarts': exon_starts,
-            'exonEnds': exon_ends,
-            'coding_start': coding_start,
-            'coding_end': coding_end
-    }

@@ -3,7 +3,7 @@
 
 from unittest import TestCase
 from utils.transcripts import TranscriptDBWriter
-from refseqdb import helper
+from refseqdb import refseq
 import uuid
 import os
 
@@ -38,7 +38,7 @@ class TestHelper(TestCase):
             }]
         }
 
-        self.ucsc_mappings = helper.read_ucsc_mapping('test/unit/data/ucsc_mapping.gz')
+        self.ucsc_mappings = refseq.read_ucsc_mapping('test/unit/data/ucsc_mapping.gz')
 
         # Initialize tdb_writer
         columns = ['ID', 'VERSION', 'HGNC_ID', 'INFO', 'STRAND', 'CHROM', 'START', 'END', 'EXONS', 'CODING_START',
@@ -58,7 +58,7 @@ class TestHelper(TestCase):
             line = line.strip()
             record.append(line)
 
-        result = helper.split_sections(record)
+        result = refseq.split_sections(record)
         assert len(result['LOCUS']) == 1
         assert len(result['VERSION']) == 1
         assert len(result['FEATURES']) == 478
@@ -79,7 +79,7 @@ class TestHelper(TestCase):
             line = line.strip()
             record.append(line)
 
-        helper.process_record(self.ucsc_mappings_NM_000059, self.tdb_writer, self.out_incl, self.out_excl, record)
+        refseq.process_record(self.ucsc_mappings_NM_000059, self.tdb_writer, self.out_incl, self.out_excl, record)
 
         r = self.tdb_writer._records['13'][0]
 
@@ -110,7 +110,7 @@ class TestHelper(TestCase):
             line = line.strip()
             record.append(line)
 
-        helper.process_record(self.ucsc_mappings, self.tdb_writer, self.out_incl, self.out_excl, record)
+        refseq.process_record(self.ucsc_mappings, self.tdb_writer, self.out_incl, self.out_excl, record)
 
         self.out_incl.close()
         self.out_excl.close()
@@ -130,7 +130,7 @@ class TestHelper(TestCase):
             line = line.strip()
             record.append(line)
 
-        helper.process_record(self.ucsc_mappings, self.tdb_writer, self.out_incl, self.out_excl, record)
+        refseq.process_record(self.ucsc_mappings, self.tdb_writer, self.out_incl, self.out_excl, record)
 
         self.out_incl.close()
         self.out_excl.close()

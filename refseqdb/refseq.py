@@ -44,7 +44,6 @@ def process_record(mappings, tdb_writer, out_incl, out_excl, record):
     if len(record) == 0:
         return
 
-    cdna_exons = []
     dna = ''
     cdna_coding_start = ''
     cdna_coding_end = ''
@@ -72,14 +71,13 @@ def process_record(mappings, tdb_writer, out_incl, out_excl, record):
             if line.startswith('/chromosome=') and chromosome == '':
                 chromosome = line[13:-1]
 
-            if line.startswith('exon'):
+            if line.startswith('CDS') and '..' in line:
                 coords = line.split()[1]
-                [start, end] = coords.split('..')
-                cdna_exons.append(start + '-' + end)
-
-            if line.startswith('CDS'):
-                coords = line.split()[1]
-                cdna_coding_start, cdna_coding_end = coords.split('..')
+                if coords.startswith('join'):
+                    out_excl.write('\t'.join([id, 'joined_cds']) + '\n')
+                    return
+                tmp = coords.split('..')
+                cdna_coding_start, cdna_coding_end = tmp[0], tmp[-1]
 
             if line.startswith('/db_xref="HGNC:') and hgncid == '':
                 hgncid = line[15:-1]
@@ -95,15 +93,6 @@ def process_record(mappings, tdb_writer, out_incl, out_excl, record):
     for x in dna:
         if x in ['a', 'c', 'g', 't']:
             sequence += x.upper()
-
-    '''
-    sequence_trimmed = ''
-    for cdna_exon in cdna_exons:
-        [start, end] = cdna_exon.split('-')
-        print str(start), str(end)
-        sequence_trimmed += sequence[int(start) - 1:int(end)]
-    sequence = sequence_trimmed
-    '''
 
     # Missing CDS
     if cdna_coding_start == '' or cdna_coding_end == '':
@@ -148,6 +137,9 @@ def process_record(mappings, tdb_writer, out_incl, out_excl, record):
     transcript.chrom = mapping['chrom']
     transcript.strand = mapping['strand']
 
+    # Set comma-delimited exon cigar strings
+    transcript.exon_cigars = ','.join(mapping['exon_cigars']) if mapping['exon_cigars'] is not None else '.'
+
     transcript.exons = []
     for i in range(len(mapping['exonStarts'])):
         transcript.exons.append(Exon(str(mapping['exonStarts'][i]) + '-' + str(mapping['exonEnds'][i])))
@@ -173,6 +165,7 @@ def process_record(mappings, tdb_writer, out_incl, out_excl, record):
     # Add transcript to database
     tdb_writer.add(transcript)
     out_incl.write('\t'.join([transcript.id, transcript.hgnc_id]) + '\n')
+
 
 
 def split_sections(record):
