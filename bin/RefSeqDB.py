@@ -6,7 +6,7 @@ from refseqdb.main import main
 import sys
 
 # Version
-ver = '0.2.0'
+ver = '0.2.1'
 
 # Command line argument parsing
 descr = 'RefSeqDB v'+ver

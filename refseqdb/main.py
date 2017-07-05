@@ -43,6 +43,8 @@ def main(ver, options):
     else:
         mapping.download_ncbi_mapping()
         mappings = mapping.read_ncbi_mapping()
+        os.remove('interim_GRCh37.p13_knownrefseq_alignments_2017-01-13.bam')
+        os.remove('interim_GRCh37.p13_top_level_2017-01-13.gff3.gz')
     print '- done'
 
     # Iterate through available RefSeq data files
