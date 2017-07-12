@@ -84,15 +84,15 @@ def download_ncbi_mapping():
             datafile.write(f.read())
 
 
-def read_ncbi_mapping():
+def read_ncbi_mapping(bam_fn, gff3_fn):
     """Read NCBI mappings data"""
 
     ret = {}
 
     # Read strand, coding_start and coding_end from GFF3 file
-    gff3_data = process_gff3_file()
+    gff3_data = process_gff3_file(gff3_fn)
 
-    for line in pysam.view('interim_GRCh37.p13_knownrefseq_alignments_2017-01-13.bam'):
+    for line in pysam.view(bam_fn):
         line = line.strip()
         cols = line.split()
 
@@ -116,7 +116,7 @@ def read_ncbi_mapping():
         # Process cigar string and calculate exon coordinates
         cigar = cols[5]
         cigar_list = split_cigar(cigar)
-        exon_lengths, intron_lengths, exon_cigars = break_to_exons(cigar_list)
+        exon_lengths, intron_lengths, exon_cigars = break_into_exons(cigar_list)
         exon_starts, exon_ends = calculate_exon_coordinates(exon_lengths, intron_lengths, start_pos)
 
         # Extract strand, coding_start, coding_end from the GFF3 data
@@ -150,7 +150,7 @@ def read_ncbi_mapping():
     return ret
 
 
-def process_gff3_file():
+def process_gff3_file(gff3_fn):
     """Read strand, coding_start and coding_end from GFF3 file"""
 
     ret = {}
@@ -158,7 +158,7 @@ def process_gff3_file():
     reading_id = ''
 
     reading = False
-    for line in gzip.open('interim_GRCh37.p13_top_level_2017-01-13.gff3.gz'):
+    for line in gzip.open(gff3_fn):
         line = line.strip()
         if line == '' or line.startswith('#'):
             continue
@@ -271,7 +271,7 @@ def split_cigar(cig):
     return ret
 
 
-def break_to_exons(cigar_list):
+def break_into_exons(cigar_list):
     """Break cigar list to exons"""
 
     exons = []

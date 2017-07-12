@@ -42,7 +42,8 @@ def main(ver, options):
         os.remove('ucsc_mapping.gz')
     else:
         mapping.download_ncbi_mapping()
-        mappings = mapping.read_ncbi_mapping()
+        mappings = mapping.read_ncbi_mapping('interim_GRCh37.p13_knownrefseq_alignments_2017-01-13.bam',
+                                             'interim_GRCh37.p13_top_level_2017-01-13.gff3.gz')
         os.remove('interim_GRCh37.p13_knownrefseq_alignments_2017-01-13.bam')
         os.remove('interim_GRCh37.p13_top_level_2017-01-13.gff3.gz')
     print '- done'
