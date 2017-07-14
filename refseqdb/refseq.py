@@ -194,12 +194,12 @@ def check_for_issues(cdna_coding_start, cdna_coding_end, sequence, version, hgnc
         out_excl.write('\t'.join([id, 'missing_hgncid']) + '\n')
         return True
 
-    # No UCSC mapping
+    # No mapping
     if id not in mappings:
         out_excl.write('\t'.join([id, 'no_mapping']) + '\n')
         return True
 
-    # Multiple UCSC mapping
+    # Multiple mapping
     if len(mappings[id]) > 1:
         out_excl.write('\t'.join([id, 'multiple_mapping']) + '\n')
         return True
