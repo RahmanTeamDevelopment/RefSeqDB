@@ -1,0 +1,19 @@
+FEATURES             Location/Qualifiers
+     source          1..11386
+                     /organism="Homo sapiens"
+                     /chromosome="13"
+                     /map="13q13.1"
+     gene            1..11386
+                     /gene="BRCA2"
+                     /gene_synonym="BRCC2; BROVCA2; FACD; FAD; FAD1; FANCD;
+                     FANCD1; GLM3; PNCA2; XRCC11"
+                     /db_xref="HGNC:HGNC:1101"
+     CDS             228..10484
+                     /gene="BRCA2"
+                     /gene_synonym="BRCC2; BROVCA2; FACD; FAD; FAD1; FANCD;
+     misc_feature    2490..2492
+                     /gene="BRCA2"
+                     /gene_synonym="BRCC2; BROVCA2; FACD; FAD; FAD1; FANCD;
+                     FANCD1; GLM3; PNCA2; XRCC11"
+
+ 
