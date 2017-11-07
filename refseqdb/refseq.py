@@ -140,6 +140,10 @@ def process_origin_section(origin_section):
 
 def load_data_into_transcript_object(id, version, hgncid, sequence, cdna_coding_start, cdna_coding_end, mapping):
 
+    # cdna_coding_start and cdna_coding_end corrections
+    cdna_coding_start = calculate_cdna_coding_start(mapping)
+    cdna_coding_end = 0
+
     # Initialize transcript and set ID, version and hgnc_id
     transcript = Transcript(id=id, version=version, hgnc_id=hgncid)
     transcript.sequence = sequence
@@ -170,6 +174,21 @@ def load_data_into_transcript_object(id, version, hgncid, sequence, cdna_coding_
     transcript.finalize()
 
     return transcript
+
+
+def calculate_cdna_coding_start(mapping):
+    ret = 0
+    for i in range(len(mapping['exonStarts'])):
+        e_start = int(mapping['exonStarts'][i])
+        e_end = int(mapping['exonEnds'][i])
+        if e_start <= int(mapping['coding_start']) < e_end:
+            if mapping['strand'] == '+':
+                ret += int(mapping['coding_start']) - e_start + 1
+            else:
+                ret += e_end - int(mapping['coding_start'])
+            break
+        ret += e_end - e_start
+    return ret
 
 
 def check_for_issues(cdna_coding_start, cdna_coding_end, sequence, version, hgncid, mappings, id, out_excl):
