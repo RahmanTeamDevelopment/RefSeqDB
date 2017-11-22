@@ -2,11 +2,11 @@ from setuptools import setup
 
 setup(
     name= 'RefSeqDB',
-    version = '0.3.1',
-    description = 'A tool for creating RefSeq transcript database',
+    version = '0.4.0',
+    description = 'A tool for creating RefSeq transcript databases',
     url = 'https://github.com/RahmanTeamDevelopment/RefSeqDB',
-    author = 'Marton Munz',
-    author_email = 'munzmarci@gmail.com',
+    author = 'RahmanTeam',
+    author_email = 'rahmanlab@icr.ac.uk',
     license = 'MIT',
     packages=['refseqdb'],
     scripts=['bin/RefSeqDB.py','bin/refseqdb'],

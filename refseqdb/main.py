@@ -31,22 +31,39 @@ def main(ver, options):
     if options.mapping == 'ucsc':
         urls = refseq.access_refseq_files()
     else:
-        urls = ['ftp://ftp.ncbi.nlm.nih.gov/genomes/Homo_sapiens/GRCh37.p13_interim_annotation/interim_GRCh37.p13_rna.gbk.gz']
+        if options.build == 'GRCh37':
+            urls = ['ftp://ftp.ncbi.nlm.nih.gov/genomes/Homo_sapiens/GRCh37.p13_interim_annotation/interim_GRCh37.p13_rna.gbk.gz']
+        else:
+            urls = ['ftp://ftp.ncbi.nlm.nih.gov/genomes/Homo_sapiens/GRCh38.p10_interim_annotation/interim_GRCh38.p10_rna.gbk.gz']
 
     # Download and read mapping data
-    sys.stdout.write('\rProcessing GRCh37 mapping data ... ')
+    sys.stdout.write('\rProcessing {} mapping data ... '.format(options.build))
     sys.stdout.flush()
-    if options.mapping == 'ucsc':
-        mapping.download_ucsc_mapping('GRCh37', 'ucsc_mapping.gz')
-        mappings = mapping.read_ucsc_mapping('ucsc_mapping.gz')
-        os.remove('ucsc_mapping.gz')
+    if options.build == 'GRCh37':
+        if options.mapping == 'ucsc':
+            mapping.download_ucsc_mapping('GRCh37', 'ucsc_mapping.gz')
+            mappings = mapping.read_ucsc_mapping('ucsc_mapping.gz')
+            os.remove('ucsc_mapping.gz')
+        else:
+            mapping.download_ncbi_mapping('GRCh37')
+            mappings = mapping.read_ncbi_mapping('interim_GRCh37.p13_knownrefseq_alignments_2017-01-13.bam',
+                                                 'interim_GRCh37.p13_top_level_2017-01-13.gff3.gz')
+            os.remove('interim_GRCh37.p13_knownrefseq_alignments_2017-01-13.bam')
+            os.remove('interim_GRCh37.p13_top_level_2017-01-13.gff3.gz')
+        print '- done'
     else:
-        mapping.download_ncbi_mapping()
-        mappings = mapping.read_ncbi_mapping('interim_GRCh37.p13_knownrefseq_alignments_2017-01-13.bam',
-                                             'interim_GRCh37.p13_top_level_2017-01-13.gff3.gz')
-        os.remove('interim_GRCh37.p13_knownrefseq_alignments_2017-01-13.bam')
-        os.remove('interim_GRCh37.p13_top_level_2017-01-13.gff3.gz')
-    print '- done'
+        if options.mapping == 'ucsc':
+            mapping.download_ucsc_mapping('GRCh38', 'ucsc_mapping.gz')
+            mappings = mapping.read_ucsc_mapping('ucsc_mapping.gz')
+            os.remove('ucsc_mapping.gz')
+        else:
+            mapping.download_ncbi_mapping('GRCh38')
+            mappings = mapping.read_ncbi_mapping('interim_GRCh38.p10_knownrefseq_alignments_2017-01-13.bam',
+                                                 'interim_GRCh38.p10_top_level_2017-01-13.gff3.gz')
+            os.remove('interim_GRCh38.p10_knownrefseq_alignments_2017-01-13.bam')
+            os.remove('interim_GRCh38.p10_top_level_2017-01-13.gff3.gz')
+        print '- done'
+
 
     # Iterate through available RefSeq data files
     for i in range(len(urls)):

@@ -6,18 +6,22 @@ from refseqdb.main import main
 import sys
 
 # Version
-ver = '0.3.1'
+ver = '0.4.0'
 
 # Command line argument parsing
 descr = 'RefSeqDB v'+ver
 parser = OptionParser(usage='RefSeqDB/env/bin/refseqdb <options>', version=ver, description=descr)
-#parser.add_option('-b', default='GRCh37', dest='build', action='store', help="Genome build [default value: %default]")
+parser.add_option('-b', default='GRCh37', dest='build', action='store', help="Genome build [default value: %default]")
 parser.add_option('-m', default='ncbi', dest='mapping', action='store', help="Mapping to use (ncbi or ucsc) [default value: %default]")
 parser.add_option('-o', default='output', dest='output', action='store', help="Output file name prefix [default value: %default]")
 (options, args) = parser.parse_args()
 
 if options.mapping not in ['ucsc', 'ncbi']:
     print '\nAllowed values for option -m are \"ucsc\" or \"ncbi\".\n'
+    sys.exit()
+
+if options.build not in ['GRCh37', 'GRCh38']:
+    print '\nAllowed values for option -b are \"GRCh37\" or \"GRCh38\".\n'
     sys.exit()
 
 # Welcome message

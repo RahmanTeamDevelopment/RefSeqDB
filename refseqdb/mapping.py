@@ -69,14 +69,21 @@ def read_ucsc_mapping(fn):
     return ret
 
 
-def download_ncbi_mapping():
+def download_ncbi_mapping(build):
     """Download NCBI mappings data"""
 
-    ftpsite = 'ftp://ftp.ncbi.nlm.nih.gov/genomes/Homo_sapiens/GRCh37.p13_interim_annotation/'
-    files = [
-        'interim_GRCh37.p13_knownrefseq_alignments_2017-01-13.bam',
-        'interim_GRCh37.p13_top_level_2017-01-13.gff3.gz'
-    ]
+    if build=='GRCh37':
+        ftpsite = 'ftp://ftp.ncbi.nlm.nih.gov/genomes/Homo_sapiens/GRCh37.p13_interim_annotation/'
+        files = [
+            'interim_GRCh37.p13_knownrefseq_alignments_2017-01-13.bam',
+            'interim_GRCh37.p13_top_level_2017-01-13.gff3.gz'
+        ]
+    else:
+        ftpsite = 'ftp://ftp.ncbi.nlm.nih.gov/genomes/Homo_sapiens/GRCh38.p10_interim_annotation/'
+        files = [
+            'interim_GRCh38.p10_knownrefseq_alignments_2017-01-13.bam',
+            'interim_GRCh38.p10_top_level_2017-01-13.gff3.gz'
+        ]
 
     for fn in files:
         f = urlopen(ftpsite + fn)
